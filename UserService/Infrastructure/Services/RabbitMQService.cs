@@ -13,15 +13,8 @@ namespace UserService.Infrastructure.Services
             _channel = channel;
         }
 
-        public void SendNotification(ApplicationUser user, string type)
+        public void SendNotification(object obj)
         {
-            var obj = new
-            {
-                UserId = user.Id,
-                UserName = user.UserName,
-                Email = user.Email,
-                Type = type
-            };
             var serializedObj = JsonConvert.SerializeObject(obj);
             var body = Encoding.UTF8.GetBytes(serializedObj);
 

@@ -1,4 +1,4 @@
-﻿using NotificationService.Application.EmailStrategies;
+﻿using NotificationService.Application.Interfaces.EmailStrategies;
 
 namespace NotificationService.Infrastructure.Services.EmailServices
 {

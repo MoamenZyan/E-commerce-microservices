@@ -24,7 +24,15 @@ namespace UserService.Application.Features.Commands.ClientSignup
             {
                 await _userManager.CreateAsync(user, request.Password);
                 await _userManager.AddToRoleAsync(user, "Admin");
-                _rabbitmqService.SendNotification(user, "welcome");
+
+                var obj = new
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Type = "welcome"
+                };
+                _rabbitmqService.SendNotification(obj);
             }
             catch (Exception)
             {

@@ -1,15 +1,15 @@
 ﻿using Microsoft.Extensions.Options;
+using NotificationService.Application.Interfaces.EmailStrategies;
 using NotificationService.Infrastructure.Configurations.SendGridConfiguration;
 using SendGrid.Helpers.Mail;
 using SendGrid;
-using NotificationService.Application.Interfaces.EmailStrategies;
 
 namespace NotificationService.Infrastructure.Services.EmailServices.StrategiesImplementation
 {
-    public class WelcomeEmailStrategy : IWelcomeEmailStrategy
+    public class ConfirmEmailStrategy : IConfirmEmailStrategy
     {
         private readonly SendGridConfiguration _sendGridConfiguration;
-        public WelcomeEmailStrategy(IOptions<SendGridConfiguration> sendGridConfiguration)
+        public ConfirmEmailStrategy(IOptions<SendGridConfiguration> sendGridConfiguration)
         {
             _sendGridConfiguration = sendGridConfiguration.Value;
         }
@@ -17,7 +17,7 @@ namespace NotificationService.Infrastructure.Services.EmailServices.StrategiesIm
         {
             var client = new SendGridClient(_sendGridConfiguration.ApiKey);
             var from = new EmailAddress(_sendGridConfiguration.FromEmail, "E-Commerce-Microservices");
-            var subject = "Welcome Onboard!";
+            var subject = "Email Confirmation Link";
             var to = new EmailAddress(email, userName);
             var htmlContent = body;
             var msg = MailHelper.CreateSingleEmail(from, to, subject, "", htmlContent);

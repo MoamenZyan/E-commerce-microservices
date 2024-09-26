@@ -1,4 +1,4 @@
-﻿namespace NotificationService.Application.EmailStrategies
+﻿namespace NotificationService.Application.Interfaces.EmailStrategies
 {
     public interface IEmailStrategy
     {

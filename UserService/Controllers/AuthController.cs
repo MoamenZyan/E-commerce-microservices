@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using UserService.Application.Common.Responses;
 using UserService.Application.Features.Commands.ClientSignup;
+using UserService.Application.Features.Commands.ConfirmEmail;
 using UserService.Application.Features.Commands.Login;
 using UserService.Application.Features.Commands.Signup;
+using UserService.Application.Features.Commands.VerifyEmail;
 
 namespace UserService.Controllers
 {
@@ -75,6 +76,40 @@ namespace UserService.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new { error = ex.Message });
             }
+        }
+
+        [HttpGet]
+        [Route("confirmEmail")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> ConfirmEmail()
+        {
+            var userId = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+
+            ConfirmEmailCommand confirmEmailCommand = new ConfirmEmailCommand { UserId = userId };
+
+            var result = await _mediator.Send(confirmEmailCommand);
+
+            if (result == false)
+                return BadRequest(new { error = "user not found / not authenticated" });
+
+            return Ok();
+        }
+
+
+        [HttpGet]
+        [Route("verifyEmail")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] VerifyEmailCommand command)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+            
+            var result = await _mediator.Send(command);
+            if (result == false)
+                return BadRequest();
+
+
+            var script = "<script>window.close();</script>";
+            return Content(script, "text/html");
         }
     }
 }

@@ -1,15 +1,17 @@
 ﻿using Microsoft.AspNetCore.Connections;
 using Microsoft.EntityFrameworkCore;
 using NotificationService.Infrastructure.Data;
-using NotificationService.Infrastructure.Services;
 using RabbitMQ;
 using RabbitMQ.Client;
 using MediatR;
 using NotificationService.Infrastructure.Configurations.SendGridConfiguration;
 using NotificationService.Infrastructure.Services.EmailServices;
-using NotificationService.Application.EmailStrategies;
 using NotificationService.Infrastructure.Services.EmailServices.StrategiesImplementation;
 using NotificationService.Application.Features.Command.CreateNormalNotification;
+using NotificationService.Infrastructure.Services.RabbitMQServices;
+using NotificationService.Application.Interfaces.EmailStrategies;
+using NotificationService.Application.Interfaces.NotificationStrategies;
+using NotificationService.Infrastructure.Services.RabbitMQServices.StrategiesImplementation;
 namespace NotificationService.Infrastructure.IoC
 {
     public static class DependencyInjection
@@ -28,7 +30,15 @@ namespace NotificationService.Infrastructure.IoC
             services.AddScoped<EmailSenderContext>();
 
             // Email Strategies Registeration
-            services.AddScoped<WelcomeEmailStrategy>();
+            services.AddScoped<IWelcomeEmailStrategy, WelcomeEmailStrategy>();
+            services.AddScoped<IConfirmEmailStrategy, ConfirmEmailStrategy>();
+
+            // Notification Strategies Registration
+            services.AddScoped<IWelcomeNotificationStrategy, WelcomeNotificationStrategy>();
+            services.AddScoped<IConfirmEmailNotificationStrategy, ConfirmEmailNotificationStrategy>();
+
+            // Notification Strategy Context Registration
+            services.AddScoped<NotificationStrategyContext>();
 
 
             // RabbitMQ
