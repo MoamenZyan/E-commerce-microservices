@@ -1,9 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>799b267e-2b56-47b8-9d70-7b30e3a0b030</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,14 +19,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Application\Features\Queries\" />
     <Folder Include="Application\Interfaces\" />
-    <Folder Include="Application\DTOs\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Domain\" />
   </ItemGroup>
 

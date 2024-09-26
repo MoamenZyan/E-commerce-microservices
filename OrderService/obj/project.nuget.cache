@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "siepUV1R/u8=",
+  "dgSpecHash": "RbwTD4L8wZU=",
   "success": true,
   "projectFilePath": "C:\\Users\\Overd\\source\\repos\\E-commerce-microservices\\OrderService\\OrderService.csproj",
   "expectedPackageFiles": [
@@ -71,6 +71,7 @@
     "C:\\Users\\Overd\\.nuget\\packages\\microsoft.win32.registry\\4.5.0\\microsoft.win32.registry.4.5.0.nupkg.sha512",
     "C:\\Users\\Overd\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\Overd\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
+    "C:\\Users\\Overd\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\Overd\\.nuget\\packages\\rabbitmq.client\\6.8.1\\rabbitmq.client.6.8.1.nupkg.sha512",
     "C:\\Users\\Overd\\.nuget\\packages\\system.buffers\\4.5.0\\system.buffers.4.5.0.nupkg.sha512",
     "C:\\Users\\Overd\\.nuget\\packages\\system.codedom\\4.4.0\\system.codedom.4.4.0.nupkg.sha512",

@@ -172,3 +172,4 @@ C:\Users\Overd\source\repos\E-commerce-microservices\ProductService\bin\Debug\ne
 C:\Users\Overd\source\repos\E-commerce-microservices\ProductService\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\Overd\source\repos\E-commerce-microservices\ProductService\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\Overd\source\repos\E-commerce-microservices\ProductService\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Overd\source\repos\E-commerce-microservices\ProductService\bin\Debug\net8.0\Newtonsoft.Json.dll

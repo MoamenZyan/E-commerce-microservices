@@ -76,13 +76,5 @@ namespace UserService.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { error = ex.Message });
             }
         }
-
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public IActionResult Test()
-        {
-            return Ok("Worked!");
-        }
     }
 }

@@ -10,6 +10,9 @@ using System.Security.Cryptography;
 using Shared.SigningKeys;
 using UserService.Infrastructure.Configurations.SendGridConfigurations;
 using MediatR;
+using Microsoft.AspNetCore.Connections;
+using RabbitMQ.Client;
+using UserService.Infrastructure.Services;
 
 namespace UserService.Infrastructure.IoC
 {
@@ -62,6 +65,35 @@ namespace UserService.Infrastructure.IoC
             });
 
             services.AddMediatR(typeof(Program));
+
+
+            // RabbitMQ
+            services.AddSingleton<RabbitMQ.Client.IConnectionFactory>(sp =>
+            {
+                return new ConnectionFactory
+                { 
+                    HostName = "localhost",
+                    Port = 5672,
+                    UserName = "guest",
+                    Password = "guest",
+                    DispatchConsumersAsync = true,
+                };
+            });
+
+            services.AddSingleton<IConnection>(sp =>
+            {
+                var factory = sp.GetRequiredService<RabbitMQ.Client.IConnectionFactory>();
+                return factory.CreateConnection();
+            });
+
+            services.AddSingleton<IModel>(sp =>
+            {
+                var connection = sp.GetRequiredService<IConnection>();
+                return connection.CreateModel();
+            });
+
+
+            services.AddScoped<RabbitMQService>();
 
             return services;
         }

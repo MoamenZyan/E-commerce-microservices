@@ -174,3 +174,4 @@ C:\Users\Overd\source\repos\E-commerce-microservices\UserService\bin\Debug\net8.
 C:\Users\Overd\source\repos\E-commerce-microservices\UserService\bin\Debug\net8.0\Shared.dll
 C:\Users\Overd\source\repos\E-commerce-microservices\UserService\bin\Debug\net8.0\Shared.pdb
 C:\Users\Overd\source\repos\E-commerce-microservices\UserService\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Overd\source\repos\E-commerce-microservices\UserService\bin\Debug\net8.0\Newtonsoft.Json.dll
