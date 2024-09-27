@@ -2,10 +2,13 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using System.Security.Claims;
 using UserService.Application.Features.Commands.ClientSignup;
 using UserService.Application.Features.Commands.ConfirmEmail;
 using UserService.Application.Features.Commands.Login;
+using UserService.Application.Features.Commands.ResetPassword;
+using UserService.Application.Features.Commands.ResetPasswordRequest;
 using UserService.Application.Features.Commands.Signup;
 using UserService.Application.Features.Commands.VerifyEmail;
 
@@ -95,7 +98,6 @@ namespace UserService.Controllers
             return Ok();
         }
 
-
         [HttpGet]
         [Route("verifyEmail")]
         public async Task<IActionResult> ConfirmEmail([FromQuery] VerifyEmailCommand command)
@@ -110,6 +112,47 @@ namespace UserService.Controllers
 
             var script = "<script>window.close();</script>";
             return Content(script, "text/html");
+        }
+
+        [HttpGet]
+        [Route("resetPassword")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> ResetPasswordRequest()
+        {
+            var userId = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            ResetPasswordRequestCommand command = new ResetPasswordRequestCommand { UserId = userId };
+            try
+            {
+                await _mediator.Send(command);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("resetPassword")]
+        public async Task<IActionResult> ResetPassword([FromQuery] string userId, [FromQuery] string token)
+        {
+            var body = await Request.ReadFormAsync();
+            ResetPasswordCommand command = new ResetPasswordCommand
+            {
+                UserId = userId,
+                Token = token,
+                Password = body["Password"]!,
+            };
+
+            try
+            {
+                await _mediator.Send(command);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

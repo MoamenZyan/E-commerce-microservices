@@ -16,6 +16,7 @@ namespace NotificationService.Infrastructure.Services.RabbitMQServices.Strategie
             {
                 "welcome" => _serviceProvider.GetService<IWelcomeNotificationStrategy>(),
                 "confirmEmail" => _serviceProvider.GetService<IConfirmEmailNotificationStrategy>(),
+                "passwordReset" => _serviceProvider.GetService<IResetPasswordStrategy>(),
                 _ => null
             };
         }

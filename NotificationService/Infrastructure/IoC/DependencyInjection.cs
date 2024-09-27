@@ -32,10 +32,12 @@ namespace NotificationService.Infrastructure.IoC
             // Email Strategies Registeration
             services.AddScoped<IWelcomeEmailStrategy, WelcomeEmailStrategy>();
             services.AddScoped<IConfirmEmailStrategy, ConfirmEmailStrategy>();
+            services.AddScoped<IResetPasswordEmailStrategy, ResetPasswordEmailStrategy>();
 
             // Notification Strategies Registration
             services.AddScoped<IWelcomeNotificationStrategy, WelcomeNotificationStrategy>();
             services.AddScoped<IConfirmEmailNotificationStrategy, ConfirmEmailNotificationStrategy>();
+            services.AddScoped<IResetPasswordStrategy, ResetPasswordStrategy>();
 
             // Notification Strategy Context Registration
             services.AddScoped<NotificationStrategyContext>();
