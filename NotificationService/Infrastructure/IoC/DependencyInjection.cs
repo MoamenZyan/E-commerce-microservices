@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Connections;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NotificationService.Infrastructure.Data;
-using RabbitMQ;
 using RabbitMQ.Client;
 using MediatR;
 using NotificationService.Infrastructure.Configurations.SendGridConfiguration;
@@ -12,6 +10,12 @@ using NotificationService.Infrastructure.Services.RabbitMQServices;
 using NotificationService.Application.Interfaces.EmailStrategies;
 using NotificationService.Application.Interfaces.NotificationStrategies;
 using NotificationService.Infrastructure.Services.RabbitMQServices.StrategiesImplementation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Shared.SigningKeys;
+using System.Security.Cryptography;
+
+
 namespace NotificationService.Infrastructure.IoC
 {
     public static class DependencyInjection
@@ -41,6 +45,27 @@ namespace NotificationService.Infrastructure.IoC
 
             // Notification Strategy Context Registration
             services.AddScoped<NotificationStrategyContext>();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                RSA rsa = RSA.Create();
+                rsa.ImportFromPem(SigningKeys.GetPublicKey());
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+
+                    ValidIssuer = "Backend",
+                    ValidAudience = "Frontend",
+                    IssuerSigningKey = new RsaSecurityKey(rsa)
+                };
+            });
 
 
             // RabbitMQ

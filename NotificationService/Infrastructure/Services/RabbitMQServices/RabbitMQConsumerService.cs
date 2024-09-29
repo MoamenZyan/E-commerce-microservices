@@ -4,6 +4,7 @@ using System.Text;
 using Newtonsoft.Json;
 using NotificationService.Infrastructure.Services.RabbitMQServices.StrategiesImplementation;
 using NotificationService.Application.Interfaces.NotificationStrategies;
+using Shared.Enums;
 
 namespace NotificationService.Infrastructure.Services.RabbitMQServices
 {
@@ -46,6 +47,7 @@ namespace NotificationService.Infrastructure.Services.RabbitMQServices
         {
             var body = ea.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
+
             var obj = JsonConvert.DeserializeObject<dynamic>(message);
 
             if (obj == null)
@@ -59,9 +61,9 @@ namespace NotificationService.Infrastructure.Services.RabbitMQServices
                     if (strategyContext == null)
                         throw new Exception("NotificationStrategyContext not registered");
                     
-                    INotificationStrategy strategy = strategyContext.GetStrategy(Convert.ToString(obj.Type));
+                    INotificationStrategy? strategy = strategyContext.GetStrategy((MessageTypes)obj.Type);
                     if (strategy != null)
-                        await strategy.Process(obj);
+                        await strategy.Process(obj.content);
                 }
 
                 _channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);

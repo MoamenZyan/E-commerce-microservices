@@ -93,6 +93,7 @@ namespace UserService.Infrastructure.IoC
             });
 
 
+            services.AddHostedService<OutboxService>();
             services.AddScoped<RabbitMQService>();
 
             return services;

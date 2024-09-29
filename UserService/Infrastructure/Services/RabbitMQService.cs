@@ -13,17 +13,29 @@ namespace UserService.Infrastructure.Services
             _channel = channel;
         }
 
-        public void SendNotification(object obj)
+        public async Task<bool> SendNotification(object obj)
         {
             var serializedObj = JsonConvert.SerializeObject(obj);
             var body = Encoding.UTF8.GetBytes(serializedObj);
 
+            _channel.ConfirmSelect();
             _channel.BasicPublish(
                 exchange: "amq.direct",
                 routingKey: "notification",
                 basicProperties: null,
                 body: body
             );
+
+            try
+            {
+                var result = await Task.Run(() => _channel.WaitForConfirms(TimeSpan.FromSeconds(30)));
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
         }
     }
 }

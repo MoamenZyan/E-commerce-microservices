@@ -1,4 +1,5 @@
 ﻿using NotificationService.Application.Interfaces.NotificationStrategies;
+using Shared.Enums;
 
 namespace NotificationService.Infrastructure.Services.RabbitMQServices.StrategiesImplementation
 {
@@ -10,13 +11,13 @@ namespace NotificationService.Infrastructure.Services.RabbitMQServices.Strategie
             _serviceProvider = serviceProvider;
         }
 
-        public INotificationStrategy? GetStrategy(string messageType)
+        public INotificationStrategy? GetStrategy(MessageTypes messageType)
         {
             return messageType switch
             {
-                "welcome" => _serviceProvider.GetService<IWelcomeNotificationStrategy>(),
-                "confirmEmail" => _serviceProvider.GetService<IConfirmEmailNotificationStrategy>(),
-                "passwordReset" => _serviceProvider.GetService<IResetPasswordStrategy>(),
+                MessageTypes.Welcome => _serviceProvider.GetService<IWelcomeNotificationStrategy>(),
+                MessageTypes.ConfirmEmail => _serviceProvider.GetService<IConfirmEmailNotificationStrategy>(),
+                MessageTypes.ResetPassword => _serviceProvider.GetService<IResetPasswordStrategy>(),
                 _ => null
             };
         }

@@ -1,6 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Shared.Entities;
+using Shared.Enums;
+using UserService.Infrastructure.Data;
 using UserService.Infrastructure.Services;
 
 namespace UserService.Application.Features.Commands.ResetPasswordRequest
@@ -8,12 +12,12 @@ namespace UserService.Application.Features.Commands.ResetPasswordRequest
     public class ResetPasswordRequestCommandHandler : IRequestHandler<ResetPasswordRequestCommand>
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RabbitMQService _rabbitmqService;
+        private readonly ApplicationDbContext _context;
 
-        public ResetPasswordRequestCommandHandler(UserManager<ApplicationUser> userManager, RabbitMQService rabbitmqService)
+        public ResetPasswordRequestCommandHandler(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             _userManager = userManager;
-            _rabbitmqService = rabbitmqService;
+            _context = context;
         }
         public async Task<Unit> Handle(ResetPasswordRequestCommand request, CancellationToken cancellationToken)
         {
@@ -23,16 +27,24 @@ namespace UserService.Application.Features.Commands.ResetPasswordRequest
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            var obj = new
+            dynamic obj = new
             {
                 UserId = request.UserId,
                 UserName = user.UserName,
                 Email = user.Email,
                 Token = token,
-                Type = "passwordReset"
             };
 
-            _rabbitmqService.SendNotification(obj);
+            OutboxMessage message = new OutboxMessage()
+            {
+                Id = Guid.NewGuid(),
+                MessageType = MessageTypes.ResetPassword,
+                Content = JsonConvert.SerializeObject(obj),
+            };
+
+            await _context.OutboxMessages.AddAsync(message);
+            await _context.SaveChangesAsync();
+
             return Unit.Value;
         }
     }
