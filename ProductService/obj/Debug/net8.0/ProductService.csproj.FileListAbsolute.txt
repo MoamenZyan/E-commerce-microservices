@@ -186,3 +186,5 @@ C:\Users\Overd\source\repos\E-commerce-microservices\ProductService\bin\Debug\ne
 C:\Users\Overd\source\repos\E-commerce-microservices\ProductService\bin\Debug\net8.0\Serilog.Formatting.Elasticsearch.dll
 C:\Users\Overd\source\repos\E-commerce-microservices\ProductService\bin\Debug\net8.0\Serilog.Sinks.Elasticsearch.dll
 C:\Users\Overd\source\repos\E-commerce-microservices\ProductService\bin\Debug\net8.0\Serilog.Sinks.PeriodicBatching.dll
+C:\Users\Overd\source\repos\E-commerce-microservices\ProductService\bin\Debug\net8.0\Shared.dll
+C:\Users\Overd\source\repos\E-commerce-microservices\ProductService\bin\Debug\net8.0\Shared.pdb

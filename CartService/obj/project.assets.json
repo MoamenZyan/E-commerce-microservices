@@ -2296,6 +2296,21 @@
             "rid": "win"
           }
         }
+      },
+      "Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Microsoft.AspNetCore.Identity": "2.2.0",
+          "Microsoft.Extensions.Identity.Stores": "8.0.8",
+          "Newtonsoft.Json": "13.0.3"
+        },
+        "compile": {
+          "bin/placeholder/Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Shared.dll": {}
+        }
       }
     }
   },
@@ -5650,6 +5665,11 @@
         "system.windows.extensions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "Shared/1.0.0": {
+      "type": "project",
+      "path": "../Shared/Shared.csproj",
+      "msbuildProject": "../Shared/Shared.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -5665,7 +5685,8 @@
       "Newtonsoft.Json >= 13.0.3",
       "RabbitMQ.Client >= 6.8.1",
       "Serilog.AspNetCore >= 8.0.2",
-      "Serilog.Sinks.Elasticsearch >= 10.0.0"
+      "Serilog.Sinks.Elasticsearch >= 10.0.0",
+      "Shared >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -5695,7 +5716,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Overd\\source\\repos\\E-commerce-microservices\\Shared\\Shared.csproj": {
+              "projectPath": "C:\\Users\\Overd\\source\\repos\\E-commerce-microservices\\Shared\\Shared.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

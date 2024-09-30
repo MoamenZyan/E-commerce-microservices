@@ -18,6 +18,8 @@ namespace NotificationService.Infrastructure.Services.RabbitMQServices.Strategie
                 MessageTypes.Welcome => _serviceProvider.GetService<IWelcomeNotificationStrategy>(),
                 MessageTypes.ConfirmEmail => _serviceProvider.GetService<IConfirmEmailNotificationStrategy>(),
                 MessageTypes.ResetPassword => _serviceProvider.GetService<IResetPasswordStrategy>(),
+                MessageTypes.ProductAddedToCart => _serviceProvider.GetService<IProductAddedToCartNotificationStrategy>(),
+                MessageTypes.ProductCreated => _serviceProvider.GetService<IProductCreatedNotificationStrategy>(),
                 _ => null
             };
         }

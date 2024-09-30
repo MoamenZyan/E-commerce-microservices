@@ -10,6 +10,8 @@ namespace Shared.Enums
     {
         Welcome,
         ConfirmEmail,
-        ResetPassword
+        ResetPassword,
+        ProductAddedToCart,
+        ProductCreated
     }
 }

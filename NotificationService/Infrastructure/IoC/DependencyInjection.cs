@@ -16,6 +16,7 @@ using Shared.SigningKeys;
 using System.Security.Cryptography;
 using Serilog.Sinks.Elasticsearch;
 using Serilog;
+using NotificationService.Infrastructure.Services.ExternalHttpServices;
 
 
 namespace NotificationService.Infrastructure.IoC
@@ -39,11 +40,15 @@ namespace NotificationService.Infrastructure.IoC
             services.AddScoped<IWelcomeEmailStrategy, WelcomeEmailStrategy>();
             services.AddScoped<IConfirmEmailStrategy, ConfirmEmailStrategy>();
             services.AddScoped<IResetPasswordEmailStrategy, ResetPasswordEmailStrategy>();
+            services.AddScoped<IProductCreatedEmailStrategy, ProductCreatedEmailStrategy>();
+            services.AddScoped<IProductAddedToCartEmailStrategy, ProductAddedToCartEmailStrategy>();
 
             // Notification Strategies Registration
             services.AddScoped<IWelcomeNotificationStrategy, WelcomeNotificationStrategy>();
             services.AddScoped<IConfirmEmailNotificationStrategy, ConfirmEmailNotificationStrategy>();
             services.AddScoped<IResetPasswordStrategy, ResetPasswordStrategy>();
+            services.AddScoped<IProductCreatedNotificationStrategy, ProductCreatedNotificationStrategy>();
+            services.AddScoped<IProductAddedToCartNotificationStrategy, ProductAddedToCartNotificationStrategy>();
 
             // Notification Strategy Context Registration
             services.AddScoped<NotificationStrategyContext>();
@@ -110,6 +115,10 @@ namespace NotificationService.Infrastructure.IoC
                     NumberOfReplicas = 1
                 })
                 .CreateLogger();
+
+            // Http Client
+            services.AddHttpClient();
+            services.AddScoped<ExternalHttpService>();
 
             return services;
         }
