@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Serilog;
 using Shared.Entities;
 using Shared.Enums;
 using UserService.Infrastructure.Data;
@@ -46,9 +47,12 @@ namespace UserService.Application.Features.Commands.Signup
 
                 await _context.OutboxMessages.AddAsync(message);
                 await _context.SaveChangesAsync();
+
+                Log.Information($"New client user has created with this id {user.Id}");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 throw;
             }
 

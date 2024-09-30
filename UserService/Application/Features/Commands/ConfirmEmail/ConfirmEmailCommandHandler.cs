@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
+using Serilog;
 using Shared.Entities;
 using Shared.Enums;
 using UserService.Infrastructure.Data;
@@ -40,8 +41,17 @@ namespace UserService.Application.Features.Commands.ConfirmEmail
                 Content = JsonConvert.SerializeObject(obj),
             };
 
-            await _context.OutboxMessages.AddAsync(message);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.OutboxMessages.AddAsync(message);
+                await _context.SaveChangesAsync();
+                Log.Information($"User {user.Id} has requested to confirm his email");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                Console.WriteLine(ex);
+            }
 
             return true;
         }

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Serilog;
 using Shared.Entities;
 
 namespace UserService.Application.Features.Commands.VerifyEmail
@@ -23,8 +24,13 @@ namespace UserService.Application.Features.Commands.VerifyEmail
                 Console.WriteLine(error.Description);
             }
             if (result.Succeeded)
+            {
+                Log.Information($"User {user.Id} has confirmed his email");
                 return true;
+            }
 
+
+            
             return false;
         }
     }

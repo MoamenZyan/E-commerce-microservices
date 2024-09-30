@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Serilog;
 using Shared.Entities;
 using Shared.Enums;
 using UserService.Infrastructure.Data;
@@ -46,9 +47,11 @@ namespace UserService.Application.Features.Commands.ClientSignup
                 await _context.OutboxMessages.AddAsync(message);
                 await _context.SaveChangesAsync();
 
+                Log.Information($"New admin user has created with this id {user.Id}");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 throw;
             }
 

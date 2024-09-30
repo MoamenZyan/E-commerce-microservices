@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Serilog;
 using Shared.Entities;
 using UserService.Application.Common.Responses;
 using UserService.Infrastructure.Utilities;
@@ -40,6 +41,7 @@ namespace UserService.Application.Features.Commands.Login
                 response.IsSuccess = false;
                 response.Data = null;
 
+                Log.Warning($"User {user.Id} has failed login attempt");
                 return response;
             }
 
@@ -51,6 +53,8 @@ namespace UserService.Application.Features.Commands.Login
             response.Errors = null;
             response.IsSuccess = true;
             response.Data = new {token = token};
+
+            Log.Information($"User {user.Id} has logged in successfully");
 
             return response;
         }

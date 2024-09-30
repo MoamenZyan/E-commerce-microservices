@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Serilog;
 using Shared.Entities;
 using Shared.Enums;
 using UserService.Infrastructure.Data;
@@ -23,7 +24,10 @@ namespace UserService.Application.Features.Commands.ResetPasswordRequest
         {
             var user = await _userManager.FindByIdAsync(request.UserId);
             if (user == null)
-                throw new Exception("user doesn't exist");
+            {
+                Log.Error($"No user found with this id {request.UserId}");
+                throw new Exception("user not exist");
+            }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
@@ -45,6 +49,8 @@ namespace UserService.Application.Features.Commands.ResetPasswordRequest
             await _context.OutboxMessages.AddAsync(message);
             await _context.SaveChangesAsync();
 
+
+            Log.Information($"User {user.Id} has requested to reset his password");
             return Unit.Value;
         }
     }

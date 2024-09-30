@@ -1,4 +1,5 @@
 using RabbitMQ.Client;
+using Serilog;
 using NotificationService.Infrastructure.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,4 +16,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+Log.Information("Notification User Started");
 app.Run();

@@ -1,18 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.SqlServer;
 using Shared.Entities;
 using UserService.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using Shared.SigningKeys;
-using UserService.Infrastructure.Configurations.SendGridConfigurations;
 using MediatR;
-using Microsoft.AspNetCore.Connections;
+using Serilog.Sinks.Elasticsearch;
 using RabbitMQ.Client;
 using UserService.Infrastructure.Services;
+using Serilog;
 
 namespace UserService.Infrastructure.IoC
 {
@@ -95,6 +93,19 @@ namespace UserService.Infrastructure.IoC
 
             services.AddHostedService<OutboxService>();
             services.AddScoped<RabbitMQService>();
+
+            // Serilog configuration
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
+                { 
+                    IndexFormat = "logs-{0:yyyy.MM.dd}",
+                    AutoRegisterTemplate = true,
+                    NumberOfShards = 2,
+                    NumberOfReplicas = 1
+                })
+                .CreateLogger();
 
             return services;
         }

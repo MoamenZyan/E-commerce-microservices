@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Shared.SigningKeys;
 using System.Security.Cryptography;
+using Serilog.Sinks.Elasticsearch;
+using Serilog;
 
 
 namespace NotificationService.Infrastructure.IoC
@@ -94,6 +96,20 @@ namespace NotificationService.Infrastructure.IoC
             });
 
             services.AddHostedService<RabbitMQConsumerService>();
+
+
+            // Serilog configuration
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
+                {
+                    IndexFormat = "logs-{0:yyyy.MM.dd}",
+                    AutoRegisterTemplate = true,
+                    NumberOfShards = 2,
+                    NumberOfReplicas = 1
+                })
+                .CreateLogger();
 
             return services;
         }
