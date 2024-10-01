@@ -11,6 +11,7 @@ using Serilog.Sinks.Elasticsearch;
 using Serilog;
 using ProductService.Infrastructure.Services.RabbitMQServices;
 using ProductService.Infrastructure.Services.OutboxServices;
+using ProductService.Infrastructure.Services.ExternalHttpServices;
 
 namespace ProductService.Infrastructure.IoC
 {
@@ -33,6 +34,7 @@ namespace ProductService.Infrastructure.IoC
                 rsa.ImportFromPem(SigningKeys.GetPublicKey());
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
+                    SaveSigninToken = true,
                     ValidIssuer = "Backend",
                     ValidAudience = "Frontend",
                     ValidateIssuer = true,
@@ -87,6 +89,10 @@ namespace ProductService.Infrastructure.IoC
                     NumberOfReplicas = 1
                 })
                 .CreateLogger();
+
+            // Http Client
+            services.AddScoped<HttpClient>();
+            services.AddScoped<ExternalHttpService>();
 
             return services;
         }

@@ -10,6 +10,7 @@ using UserService.Application.Features.Commands.ResetPassword;
 using UserService.Application.Features.Commands.ResetPasswordRequest;
 using UserService.Application.Features.Commands.Signup;
 using UserService.Application.Features.Commands.VerifyEmail;
+using UserService.Application.Features.Queries.GetUserRoles;
 
 namespace UserService.Controllers
 {
@@ -129,6 +130,23 @@ namespace UserService.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet]
+        [Route("roles")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetUserRoles([FromQuery] string userId)
+        {
+            GetUserRolesQuery query = new GetUserRolesQuery()
+            {
+                UserId = userId
+            };
+
+            var result = await _mediator.Send(query);
+            if (result == null)
+                return BadRequest();
+
+            return Ok(result);
         }
 
         [HttpPost]

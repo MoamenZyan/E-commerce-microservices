@@ -1,8 +1,11 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductService.Application.Features.Commands.CreateProduct;
+using ProductService.Application.Features.Commands.DeleteProduct;
+using ProductService.Application.Features.Queries.GetAllProducts;
 using ProductService.Application.Features.Queries.GetAllUserProducts;
 using ProductService.Application.Features.Queries.GetProduct;
 using ProductService.Application.Features.Queries.GetProductsInfo;
@@ -31,10 +34,9 @@ namespace ProductService.Controllers
         }
 
         [HttpGet]
-        [Route("all")]
-        public async Task<IActionResult> GetUserProducts([FromQuery]Guid userId)
+        [Route("all/{userId}")]
+        public async Task<IActionResult> GetUserProducts(Guid userId)
         {
-            Console.WriteLine("hello");
             GetAllUserProductsQuery query = new GetAllUserProductsQuery()
             {
                 UserId = userId
@@ -65,6 +67,37 @@ namespace ProductService.Controllers
 
             var result = await _mediator.Send(command);
             if (result)
+                return NoContent();
+
+            return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("all")]
+        public async Task<IActionResult> GetAllProducts()
+        {
+            GetAllProductsQuery query = new GetAllProductsQuery();
+            return Ok(await _mediator.Send(query));
+        }
+
+        [HttpDelete]
+        [Route("{productId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> DeleteProduct(Guid productId)
+        {
+            var token = await HttpContext.GetTokenAsync("access_token");
+            if (token == null)
+                return BadRequest("access token not exist");
+
+            DeleteProductCommand command = new DeleteProductCommand()
+            {
+                ProductId = productId,
+                UserId = User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value,
+                Token = token
+            };
+
+            var result = await _mediator.Send(command);
+            if (result) 
                 return NoContent();
 
             return BadRequest();
