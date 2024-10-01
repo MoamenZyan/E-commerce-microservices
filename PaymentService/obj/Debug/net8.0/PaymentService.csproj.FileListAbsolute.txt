@@ -186,3 +186,6 @@ C:\Users\Overd\source\repos\E-commerce-microservices\PaymentService\bin\Debug\ne
 C:\Users\Overd\source\repos\E-commerce-microservices\PaymentService\bin\Debug\net8.0\Serilog.Formatting.Elasticsearch.dll
 C:\Users\Overd\source\repos\E-commerce-microservices\PaymentService\bin\Debug\net8.0\Serilog.Sinks.Elasticsearch.dll
 C:\Users\Overd\source\repos\E-commerce-microservices\PaymentService\bin\Debug\net8.0\Serilog.Sinks.PeriodicBatching.dll
+C:\Users\Overd\source\repos\E-commerce-microservices\PaymentService\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\Overd\source\repos\E-commerce-microservices\PaymentService\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\Overd\source\repos\E-commerce-microservices\PaymentService\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll

@@ -51,6 +51,7 @@ namespace UserService.Infrastructure.IoC
                 rsa.ImportFromPem(SigningKeys.GetPublicKey());
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
+                    SaveSigninToken = true,
                     ValidIssuer = "Backend",
                     ValidAudience = "Frontend",
                     ValidateIssuer = true,
@@ -106,6 +107,11 @@ namespace UserService.Infrastructure.IoC
                     NumberOfReplicas = 1
                 })
                 .CreateLogger();
+
+
+            //Http Client Service
+            services.AddScoped<ExternalHttpService>();
+            services.AddScoped<HttpClient>();
 
             return services;
         }

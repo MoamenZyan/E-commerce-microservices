@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductService.Application.Features.Commands.CreateProduct;
+using ProductService.Application.Features.Queries.GetAllUserProducts;
 using ProductService.Application.Features.Queries.GetProduct;
+using ProductService.Application.Features.Queries.GetProductsInfo;
 using System.Security.Claims;
 
 namespace ProductService.Controllers
@@ -26,6 +28,32 @@ namespace ProductService.Controllers
                 return Ok(result);
 
             return NotFound();
+        }
+
+        [HttpGet]
+        [Route("all")]
+        public async Task<IActionResult> GetUserProducts([FromQuery]Guid userId)
+        {
+            Console.WriteLine("hello");
+            GetAllUserProductsQuery query = new GetAllUserProductsQuery()
+            {
+                UserId = userId
+            };
+
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("info")]
+        public async Task<IActionResult> GetProductsInfo([FromBody] List<Guid> productsIds)
+        {
+            GetProductsInfoQuery query = new GetProductsInfoQuery()
+            {
+                ProductsIds = productsIds
+            };
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
 
         [HttpPost]

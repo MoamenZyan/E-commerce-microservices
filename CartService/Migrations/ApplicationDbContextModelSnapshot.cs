@@ -35,7 +35,7 @@ namespace CartService.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("DATETIME2")
-                        .HasDefaultValue(new DateTime(2024, 10, 1, 0, 15, 4, 427, DateTimeKind.Local).AddTicks(9746));
+                        .HasDefaultValue(new DateTime(2024, 10, 1, 15, 36, 9, 804, DateTimeKind.Local).AddTicks(9295));
 
                     b.Property<bool>("IsNotification")
                         .HasColumnType("BIT");
@@ -54,22 +54,6 @@ namespace CartService.Migrations
                     b.ToTable("Outbox", (string)null);
                 });
 
-            modelBuilder.Entity("CartService.Domain.Entities.ProductCart", b =>
-                {
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CartId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ProductId", "CartId");
-
-                    b.ToTable("ProductCarts", (string)null);
-                });
-
             modelBuilder.Entity("Shared.Entities.Cart", b =>
                 {
                     b.Property<Guid>("Id")
@@ -85,6 +69,40 @@ namespace CartService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Carts", (string)null);
+                });
+
+            modelBuilder.Entity("Shared.Entities.ProductCart", b =>
+                {
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CartId")
+                        .HasColumnType("UNIQUEIDENTIFIER");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ProductId", "CartId");
+
+                    b.HasIndex("CartId");
+
+                    b.ToTable("ProductCarts", (string)null);
+                });
+
+            modelBuilder.Entity("Shared.Entities.ProductCart", b =>
+                {
+                    b.HasOne("Shared.Entities.Cart", "Cart")
+                        .WithMany("Products")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+                });
+
+            modelBuilder.Entity("Shared.Entities.Cart", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

@@ -4,6 +4,7 @@ using CartService.Application.Features.Commands.AddProductToCart;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using CartService.Application.Features.Queries.GetUserCart;
 namespace CartService.Controllers
 {
     [ApiController]
@@ -33,6 +34,13 @@ namespace CartService.Controllers
                 return NoContent();
 
             return BadRequest();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUserCart([FromQuery] GetUserCartQuery query)
+        {
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
     }
 }

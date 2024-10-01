@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Serilog;
 using Shared.Entities;
 using Shared.Enums;
+using UserService.Application.Features.Commands.ClientSignup;
 using UserService.Infrastructure.Data;
 using UserService.Infrastructure.Services;
 

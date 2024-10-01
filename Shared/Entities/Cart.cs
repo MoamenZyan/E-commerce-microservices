@@ -11,5 +11,7 @@ namespace Shared.Entities
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public virtual List<ProductCart> Products { get; set; } = new List<ProductCart>();
     }
 }
