@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ProductService.Application.Features.Commands.CreateProduct;
 using ProductService.Application.Features.Commands.DeleteProduct;
 using ProductService.Application.Features.Queries.GetAllProducts;

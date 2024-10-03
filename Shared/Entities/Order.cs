@@ -10,8 +10,12 @@ namespace Shared.Entities
     public class Order
     {
         public Guid Id { get; set; }
-        public DateTime IssuedAt { get; set; }
+        public Guid UserId { get; set; }
         public OrderStatus Status { get; set; }
-        public decimal TotalPrice { get; set; }
+        public string ExternalId { get; set; } = null!;
+        public decimal Total { get; set; }
+        public DateTime IssuedAt { get; set; }
+
+        public virtual List<OrderItem> Items { get; set; } = new List<OrderItem>();
     }
 }
