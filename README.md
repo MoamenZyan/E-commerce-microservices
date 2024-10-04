@@ -77,6 +77,6 @@ The application follows a microservices architecture with each service handling 
 
 ## Screenshots
 ![Kibana Elastic Search](https://github.com/user-attachments/assets/ad0f3604-e16d-4b07-b4ec-a740fe764155)
-![orderConfirmedEmail](https://github.com/user-attachments/assets/8b7cda00-9ecd-43c0-b78a-9e31eae1dd66)
-![Stripe Checkout](https://github.com/user-attachments/assets/2d7fdfcc-93ff-4eec-9826-0a3909d86f44)
 ![productsAddedToCartEmail](https://github.com/user-attachments/assets/6e8e6716-5d5a-4d93-991a-8351d51435ef)
+![Stripe Checkout](https://github.com/user-attachments/assets/2d7fdfcc-93ff-4eec-9826-0a3909d86f44)
+![orderConfirmedEmail](https://github.com/user-attachments/assets/8b7cda00-9ecd-43c0-b78a-9e31eae1dd66)
