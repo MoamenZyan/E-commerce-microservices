@@ -48,7 +48,7 @@ The application follows a microservices architecture with each service handling 
 ## Features
 
 - User authentication and authorization.
-- Product management and search.
+- Product management.
 - Shopping cart functionality.
 - Order processing with payment integration.
 - Review and rating system.
