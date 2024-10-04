@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using OrderService.Infrastructure.Data;
 using OrderService.Infrastructure.Services.ExternalHttpServices;
+using Serilog;
 using Shared.Entities;
 
 namespace OrderService.Application.Features.Commands.ConfirmOrder
@@ -81,6 +82,7 @@ namespace OrderService.Application.Features.Commands.ConfirmOrder
             _context.Update(order);
             await _context.SaveChangesAsync();
 
+            Log.Information($"order {order.Id} has been confirmed");
             return true;
         }
     }

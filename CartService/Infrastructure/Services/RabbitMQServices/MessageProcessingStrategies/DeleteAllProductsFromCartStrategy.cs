@@ -1,6 +1,7 @@
 ﻿
 using CartService.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace CartService.Infrastructure.Services.RabbitMQServices.MessageProcessingStrategies
 {
@@ -21,11 +22,14 @@ namespace CartService.Infrastructure.Services.RabbitMQServices.MessageProcessing
                     return true;
 
                 await _context.ProductCarts.Where(x => x.CartId == cart.Id).ExecuteDeleteAsync();
+
+                Log.Information($"cart has been cleared for user {userId}");
                 return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                Log.Error(ex.Message);
                 return false;
             }
         }

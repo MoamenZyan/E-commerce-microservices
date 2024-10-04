@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using PaymentService.Application.Interfaces;
 using PaymentService.Application.Responses;
 using PaymentService.Infrastructure.PaymentServices;
+using Serilog;
 using Shared.Enums;
 
 namespace PaymentService.Application.Features.Commands.CreatePaymentOrder
@@ -23,6 +24,7 @@ namespace PaymentService.Application.Features.Commands.CreatePaymentOrder
                     IsSuccess = false,
                 };
 
+            Log.Information($"user by email {request.Email} has request a checkout of type {request.PaymentType.ToString()}");
             return await paymentStrategy.Pay(request);
         }
     }

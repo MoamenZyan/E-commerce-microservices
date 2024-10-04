@@ -1,6 +1,7 @@
 ﻿
 using CartService.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace CartService.Infrastructure.Services.RabbitMQServices.MessageProcessingStrategies
 {
@@ -21,11 +22,14 @@ namespace CartService.Infrastructure.Services.RabbitMQServices.MessageProcessing
                     _context.ProductCarts.Remove(product);
 
                 await _context.SaveChangesAsync();
+
+                Log.Information($"product {product!.ProductId} has been removed from user {product.Cart.UserId}");
                 return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                Log.Error(ex.Message);
                 return false;
             }
         }

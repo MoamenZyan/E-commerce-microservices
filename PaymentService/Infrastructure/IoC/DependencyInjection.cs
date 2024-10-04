@@ -5,6 +5,8 @@ using MediatR;
 using PaymentService.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
+using Serilog.Sinks.Elasticsearch;
+using Serilog;
 
 namespace PaymentService.Infrastructure.IoC
 {
@@ -31,6 +33,21 @@ namespace PaymentService.Infrastructure.IoC
             StripeConfiguration.ApiKey = configuration["Stripe:SecretKey"];
             services.AddScoped<PaypalService>();
             services.AddScoped<StripeService>();
+
+
+            // Serilog configuration
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
+                {
+                    IndexFormat = "logs-{0:yyyy.MM.dd}",
+                    AutoRegisterTemplate = true,
+                    NumberOfShards = 2,
+                    NumberOfReplicas = 1
+                })
+                .CreateLogger();
+
             return services;
         }
     }

@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using OrderService.Domain;
 using OrderService.Infrastructure.Data;
 using OrderService.Infrastructure.Services.ExternalHttpServices;
+using Serilog;
 using Shared.DTOs;
 using Shared.Entities;
 using Shared.Enums;
@@ -84,6 +85,7 @@ namespace OrderService.Application.Features.Commands.CreateOrder
             await _context.Items.AddRangeAsync(orderItems);
             await _context.SaveChangesAsync();
 
+            Log.Information($"order has been issued for user {request.UserId} of payment type {request.PaymentType.ToString()}");
             return result.RedirectionUrl;
         }
     }
