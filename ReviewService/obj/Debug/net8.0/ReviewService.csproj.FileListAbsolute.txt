@@ -189,3 +189,5 @@ C:\Users\Overd\source\repos\E-commerce-microservices\ReviewService\bin\Debug\net
 C:\Users\Overd\source\repos\E-commerce-microservices\ReviewService\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\Overd\source\repos\E-commerce-microservices\ReviewService\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\Overd\source\repos\E-commerce-microservices\ReviewService\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+C:\Users\Overd\source\repos\E-commerce-microservices\ReviewService\bin\Debug\net8.0\Shared.dll
+C:\Users\Overd\source\repos\E-commerce-microservices\ReviewService\bin\Debug\net8.0\Shared.pdb

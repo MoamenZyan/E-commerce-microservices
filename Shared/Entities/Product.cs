@@ -17,5 +17,6 @@ namespace Shared.Entities
         public decimal Price { get; set; }
         public int Discount { get; set; }
         public DateTime CreatedAt { get; set; }
+        public List<Review>? Reviews { get; set; } = new List<Review>();
     }
 }

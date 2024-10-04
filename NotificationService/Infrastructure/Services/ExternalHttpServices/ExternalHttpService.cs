@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Shared.Entities;
+using Shared.DTOs;
 
 namespace NotificationService.Infrastructure.Services.ExternalHttpServices
 {
@@ -11,13 +11,13 @@ namespace NotificationService.Infrastructure.Services.ExternalHttpServices
             _httpClient = httpClient;
         }
 
-        public async Task<Product?> GetProduct(string productId)
+        public async Task<ProductDto?> GetProduct(string productId)
         {
             var url = $"http://localhost:5190/api/product?productId={productId}";
 
             HttpResponseMessage response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
-            Product? content = JsonConvert.DeserializeObject<Product>(await response.Content.ReadAsStringAsync());
+            ProductDto? content = JsonConvert.DeserializeObject<ProductDto>(await response.Content.ReadAsStringAsync());
             return content;
         }
     }

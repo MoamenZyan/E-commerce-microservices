@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using OrderService.Domain;
+using Shared.DTOs;
 using Shared.Entities;
 using System.Net.Http.Headers;
 using System.Text;
@@ -25,7 +26,7 @@ namespace OrderService.Infrastructure.Services.ExternalHttpServices
             return JsonConvert.DeserializeObject<Cart>(content);
         }
 
-        public async Task<List<Product>?> GetProductsInfo(List<Guid> ProductsIds)
+        public async Task<List<ProductDto>?> GetProductsInfo(List<Guid> ProductsIds)
         {
             var content = new StringContent(
                 JsonConvert.SerializeObject(ProductsIds),
@@ -35,7 +36,7 @@ namespace OrderService.Infrastructure.Services.ExternalHttpServices
 
             HttpResponseMessage response = await _httpClient.PostAsync($"http://localhost:5190/api/product/info", content);
             string responseData = await response.Content.ReadAsStringAsync();
-            List<Product>? products = JsonConvert.DeserializeObject<List<Product>>(responseData);
+            List<ProductDto>? products = JsonConvert.DeserializeObject<List<ProductDto>>(responseData);
             return products;
         }
 

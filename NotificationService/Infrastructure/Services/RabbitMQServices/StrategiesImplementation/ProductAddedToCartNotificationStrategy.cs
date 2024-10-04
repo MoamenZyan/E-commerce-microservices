@@ -5,6 +5,7 @@ using NotificationService.Application.Interfaces.EmailStrategies;
 using NotificationService.Application.Interfaces.NotificationStrategies;
 using NotificationService.Infrastructure.Services.EmailServices;
 using NotificationService.Infrastructure.Services.ExternalHttpServices;
+using Shared.DTOs;
 using Shared.Entities;
 
 namespace NotificationService.Infrastructure.Services.RabbitMQServices.StrategiesImplementation
@@ -30,7 +31,7 @@ namespace NotificationService.Infrastructure.Services.RabbitMQServices.Strategie
 
                     emailSenderContext.SetStrategy(productAddedToCartEmailStrategy);
 
-                    Product? product = await httpClient.GetProduct(Convert.ToString(messageObj.ProductId));
+                    ProductDto? product = await httpClient.GetProduct(Convert.ToString(messageObj.ProductId));
                     if (product == null)
                         throw new Exception("Product not exists");
 

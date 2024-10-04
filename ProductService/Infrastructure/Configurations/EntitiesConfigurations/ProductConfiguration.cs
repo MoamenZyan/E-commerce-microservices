@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Shared.DTOs;
 using Shared.Entities;
 using Shared.Enums;
 
 namespace ProductService.Infrastructure.Configurations.EntitiesConfigurations
 {
-    public class ProductConfiguration : IEntityTypeConfiguration<Product>
+    public class ProductConfiguration : IEntityTypeConfiguration<ProductDto>
     {
-        public void Configure(EntityTypeBuilder<Product> builder)
+        public void Configure(EntityTypeBuilder<ProductDto> builder)
         {
             builder.ToTable("Products");
             builder.HasKey(x => x.Id);

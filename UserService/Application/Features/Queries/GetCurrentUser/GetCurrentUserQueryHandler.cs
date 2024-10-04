@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
+using Shared.DTOs;
 using Shared.Entities;
 using UserService.Application.DTOs;
 using UserService.Infrastructure.Data;
@@ -23,10 +25,9 @@ namespace UserService.Application.Features.Queries.GetCurrentUser
                 return null;
 
             var ownedProduct = await _httpService.GetUserProducts(new Guid(user.Id));
-
             var cart = await _httpService.GetUserCart(new Guid(user.Id), request.Token);
 
-            List<Product>? productsCartInfo = new List<Product>();
+            List<dynamic>? productsCartInfo = new List<dynamic>();
 
             if (cart != null)
             {

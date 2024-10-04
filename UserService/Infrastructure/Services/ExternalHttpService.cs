@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Shared.Entities;
 using System.Text;
 using System.Net.Http.Headers;
+using Shared.DTOs;
 
 namespace UserService.Infrastructure.Services
 {
@@ -33,7 +34,7 @@ namespace UserService.Infrastructure.Services
             return cart;
         }
 
-        public async Task<List<Product>?> GetProductsInfo(List<Guid> ProductsIds)
+        public async Task<List<dynamic>?> GetProductsInfo(List<Guid> ProductsIds)
         {
             var content = new StringContent(
                 JsonConvert.SerializeObject(ProductsIds),
@@ -47,7 +48,7 @@ namespace UserService.Infrastructure.Services
 
             HttpResponseMessage response = await _httpClient.PostAsync($"http://localhost:5190/api/product/info", content);
             string responseData = await response.Content.ReadAsStringAsync();
-            List<Product>? products = JsonConvert.DeserializeObject<List<Product>>(responseData);
+            List<dynamic>? products = JsonConvert.DeserializeObject<List<dynamic>>(responseData);
             return products;
         }
     }

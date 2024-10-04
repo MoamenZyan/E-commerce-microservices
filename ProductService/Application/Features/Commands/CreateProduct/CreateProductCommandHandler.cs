@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using ProductService.Infrastructure.Data;
 using Serilog;
+using Shared.DTOs;
 using Shared.Entities;
 
 namespace ProductService.Application.Features.Commands.CreateProduct

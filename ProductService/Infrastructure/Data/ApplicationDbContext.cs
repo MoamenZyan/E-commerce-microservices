@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using ProductService.Infrastructure.Configurations.EntitiesConfigurations;
+using Shared.DTOs;
 using Shared.Entities;
 
 namespace ProductService.Infrastructure.Data
