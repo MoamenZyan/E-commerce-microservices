@@ -4,6 +4,7 @@ using PaymentService.Infrastructure.PaymentServices;
 using MediatR;
 using PaymentService.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 namespace PaymentService.Infrastructure.IoC
 {
@@ -27,6 +28,7 @@ namespace PaymentService.Infrastructure.IoC
             services.AddScoped<HttpClient>();
             services.AddScoped<PaymentStrategyContext>();
 
+            StripeConfiguration.ApiKey = configuration["Stripe:SecretKey"];
             services.AddScoped<PaypalService>();
             services.AddScoped<StripeService>();
             return services;

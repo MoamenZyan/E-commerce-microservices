@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Shared.Enums;
 
 namespace OrderService.Application.Features.Commands.CreateOrder
 {
@@ -6,5 +7,7 @@ namespace OrderService.Application.Features.Commands.CreateOrder
     {
         public required Guid UserId { get; set; }
         public required string Token { get; set; }
+        public required string Email { get; set; }
+        public required PaymentType PaymentType { get; set; }
     }
 }

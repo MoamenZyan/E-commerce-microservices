@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PaymentService.Application.Features.Commands.CreatePaymentOrder;
-using PaymentService.Application.Features.Queries.CheckOrder;
 using Shared.Enums;
 
 namespace PaymentService.Controllers
@@ -20,19 +19,12 @@ namespace PaymentService.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePaymentOrder([FromBody] CreatePaymentOrderCommand command)
+        public async Task<IActionResult> CreateCheckout([FromBody] CreateCheckoutCommand command)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             return Ok(await _mediator.Send(command));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> CheckOrder([FromQuery] CheckOrderQuery query)
-        {
-            var result = await _mediator.Send(query);
-            if (result == null)
-                return BadRequest();
-
-            return Ok(result);
         }
     }
 }

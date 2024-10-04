@@ -42,6 +42,7 @@ namespace NotificationService.Infrastructure.IoC
             services.AddScoped<IResetPasswordEmailStrategy, ResetPasswordEmailStrategy>();
             services.AddScoped<IProductCreatedEmailStrategy, ProductCreatedEmailStrategy>();
             services.AddScoped<IProductAddedToCartEmailStrategy, ProductAddedToCartEmailStrategy>();
+            services.AddScoped<IOrderConfirmedEmailStrategy, OrderConfirmedEmailStrategy>();
 
             // Notification Strategies Registration
             services.AddScoped<IWelcomeNotificationStrategy, WelcomeNotificationStrategy>();
@@ -49,6 +50,7 @@ namespace NotificationService.Infrastructure.IoC
             services.AddScoped<IResetPasswordStrategy, ResetPasswordStrategy>();
             services.AddScoped<IProductCreatedNotificationStrategy, ProductCreatedNotificationStrategy>();
             services.AddScoped<IProductAddedToCartNotificationStrategy, ProductAddedToCartNotificationStrategy>();
+            services.AddScoped<IOrderConfirmedNotificationStrategy, OrderConfirmedNotificationStrategy>();
 
             // Notification Strategy Context Registration
             services.AddScoped<NotificationStrategyContext>();

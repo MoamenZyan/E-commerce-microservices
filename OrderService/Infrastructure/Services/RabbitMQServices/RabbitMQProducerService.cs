@@ -14,15 +14,15 @@ namespace OrderService.Infrastructure.Services.RabbitMQServices
             _channel.QueueDeclare("order", true, false, false, null);
         }
 
-        public async Task<bool> SendMessage(Order obj)
+        public async Task<bool> SendMessage(object obj, string routingKey)
         {
             var serializedObj = JsonConvert.SerializeObject(obj);
             var body = Encoding.UTF8.GetBytes(serializedObj);
 
-
+            _channel.ConfirmSelect();
             _channel.BasicPublish(
                 exchange: "amq.direct",
-                routingKey: "payment",
+                routingKey: routingKey,
                 basicProperties: null,
                 body: body
             );

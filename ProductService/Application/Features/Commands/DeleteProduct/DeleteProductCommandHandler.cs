@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using ProductService.Infrastructure.Data;
 using ProductService.Infrastructure.Services.ExternalHttpServices;
 using Shared.Entities;
@@ -27,7 +28,17 @@ namespace ProductService.Application.Features.Commands.DeleteProduct
 
             if (product.OwnerId == new Guid(request.UserId) || (roles != null && roles.Contains("Admin")))
             {
+                OutboxMessage message = new OutboxMessage()
+                {
+                    Id = Guid.NewGuid(),
+                    MessageType = Shared.Enums.MessageTypes.ProductDeleted,
+                    Content = JsonConvert.SerializeObject(product),
+                    Processed = false,
+                    CreatedAt = DateTime.Now,
+                };
+
                 _context.Products.Remove(product);
+                await _context.OutboxMessages.AddAsync(message);
                 await _context.SaveChangesAsync();
                 return true;
             }

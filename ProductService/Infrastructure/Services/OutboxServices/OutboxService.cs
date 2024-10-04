@@ -43,8 +43,16 @@ namespace ProductService.Infrastructure.Services.OutboxServices
                                     content,
                                     Type = message.MessageType,
                                 };
+                                var result = false;
+                                if (message.MessageType == Shared.Enums.MessageTypes.ProductDeleted)
+                                {
+                                    result = await rabbitMqService.SendProductMessage(obj);
+                                }
+                                else
+                                {
 
-                                var result = await rabbitMqService.SendNotification(obj);
+                                    result = await rabbitMqService.SendNotification(obj);
+                                }
 
                                 if (result == true)
                                     message.Processed = true;

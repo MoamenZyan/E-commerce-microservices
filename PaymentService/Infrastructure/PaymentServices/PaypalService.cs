@@ -8,6 +8,7 @@ using Shared.Entities;
 using PaymentService.Domain;
 using PaymentService.Application.Responses;
 using Shared.Enums;
+using System.Text;
 
 namespace PaymentService.Infrastructure.PaymentServices
 {
@@ -22,13 +23,16 @@ namespace PaymentService.Infrastructure.PaymentServices
             _configuration = configuration;
             _context = context;
         }
-        public async Task<dynamic> Pay(CreatePaymentOrderCommand command)
+        public async Task<CheckoutResponse> Pay(CreateCheckoutCommand command)
         {
             var token = await GetAccessToken();
-            return await CreatePaypalPaymentOrder(token, command);
+            var result = await CreatePaypalPaymentOrder(token, command);
+
+            return result;
         }
-        public async Task<PaypalOrder> CreatePaypalPaymentOrder(string token, CreatePaymentOrderCommand command)
+        public async Task<CheckoutResponse> CreatePaypalPaymentOrder(string token, CreateCheckoutCommand command)
         {
+            var orderId = Guid.NewGuid();
             var url = "https://api.sandbox.paypal.com/v2/checkout/orders/";
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
@@ -37,7 +41,6 @@ namespace PaymentService.Infrastructure.PaymentServices
             var items = command.Products.Select(x => new
             {
                 name = x.Name,
-                description = x.Description,
                 quantity = x.Quantity.ToString(),
                 unit_amount = new 
                 {
@@ -45,6 +48,9 @@ namespace PaymentService.Infrastructure.PaymentServices
                     value = x.Price.ToString(),
                 }
             });
+
+            var textBytes = Encoding.UTF8.GetBytes($"{command.Email}:{orderId}");
+            var base64String = Convert.ToBase64String(textBytes);
 
             var body = new
             {
@@ -69,6 +75,10 @@ namespace PaymentService.Infrastructure.PaymentServices
                         items = items
                     }
                 },
+                application_context = new
+                {
+                    return_url = $"http://localhost:5126/api/order/success/{base64String}"
+                }
             };
 
 
@@ -78,10 +88,26 @@ namespace PaymentService.Infrastructure.PaymentServices
             };
             
             var response = await _httpClient.SendAsync(request);
-            var content = await response.Content.ReadAsStringAsync();
 
+            if (!response.IsSuccessStatusCode)
+            {
+                return new CheckoutResponse
+                {
+                    IsSuccess = false
+                };
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
             PaypalOrder paypalOrder = JsonConvert.DeserializeObject<PaypalOrder>(content)!;
-            return paypalOrder;
+            CheckoutResponse checkout = new CheckoutResponse()
+            { 
+                OrderId = orderId,
+                CheckoutId = paypalOrder.Id,
+                IsSuccess = response.IsSuccessStatusCode ? true : false,
+                RedirectionUrl = paypalOrder.Links.First(x => x.Rel == "approve").Href
+            };
+
+            return checkout;
         }
         private async Task<string> GetAccessToken()
         {
@@ -149,36 +175,6 @@ namespace PaymentService.Infrastructure.PaymentServices
                 return obj!.access_token;
             }
 
-            return null;
-        }
-
-        public async Task<OrderCheckResponse?> CheckOrder(string orderId)
-        {
-            var url = $"https://api.sandbox.paypal.com/v2/checkout/orders/{orderId}";
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await GetAccessToken());
-            var response = await _httpClient.GetAsync(url);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                var order = JsonConvert.DeserializeObject<OrderCheckResponse>(content);
-                if (order!.Status == Convert.ToString(OrderStatus.APPROVED))
-                {
-                    url = $"https://api.sandbox.paypal.com/v2/checkout/orders/{orderId}/capture";
-                    response = await _httpClient.PostAsync(url, new StringContent("{}", Encoding.UTF8, "application/json"));
-                    if (response.IsSuccessStatusCode)
-                    {
-                        content = await response.Content.ReadAsStringAsync();
-                        return JsonConvert.DeserializeObject<OrderCheckResponse>(content);
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-
-                return order;
-            }
             return null;
         }
     }

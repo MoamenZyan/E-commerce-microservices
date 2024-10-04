@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using CartService.Infrastructure.Services.OutboxServices;
 using CartService.Infrastructure.Services.RabbitMQServices;
 using System.Net.Http;
+using CartService.Infrastructure.Services.RabbitMQServices.MessageProcessingStrategies;
 
 namespace CartService.Infrastructure.IoC
 {
@@ -95,6 +96,12 @@ namespace CartService.Infrastructure.IoC
                 })
                 .CreateLogger();
 
+
+            // message processing strategies
+
+            services.AddScoped<MessageProcessingContext>();
+            services.AddScoped<DeleteProductFromCartStrategy>();
+            services.AddScoped<DeleteAllProductsFromCartStrategy>();
 
             return services;
         }

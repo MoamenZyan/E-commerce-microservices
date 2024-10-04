@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OrderService.Domain;
 using Shared.Entities;
 using System.Net.Http.Headers;
 using System.Text;
@@ -39,7 +40,7 @@ namespace OrderService.Infrastructure.Services.ExternalHttpServices
         }
 
 
-        public async Task<PaypalOrder> CreatePaypalOrder(object obj)
+        public async Task<Checkout> CreateCheckout(object obj)
         {
             var content = new StringContent(
                 JsonConvert.SerializeObject(obj),
@@ -56,19 +57,9 @@ namespace OrderService.Infrastructure.Services.ExternalHttpServices
 
             var response = await _httpClient.SendAsync(request);
             var jsonContent = await response.Content.ReadAsStringAsync();
+
             var dynamicObj = JsonConvert.DeserializeObject<dynamic>(jsonContent)!;
-            return JsonConvert.DeserializeObject<PaypalOrder>(JsonConvert.SerializeObject(dynamicObj.content));
-        }
-
-        public async Task<dynamic?> CheckOrder(string orderId)
-        {
-            _httpClient.DefaultRequestHeaders.Add("X-API-KEY", "Very Very Secret API KEY :)");
-            var response = await _httpClient.GetAsync($"http://localhost:5127/api/payment?orderId={orderId}");
-            if (!response.IsSuccessStatusCode)
-                return null;
-
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<dynamic>(content)!;
+            return JsonConvert.DeserializeObject<Checkout>(JsonConvert.SerializeObject(dynamicObj));
         }
     }
 }

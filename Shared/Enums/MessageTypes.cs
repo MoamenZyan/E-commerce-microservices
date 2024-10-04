@@ -12,6 +12,9 @@ namespace Shared.Enums
         ConfirmEmail,
         ResetPassword,
         ProductAddedToCart,
-        ProductCreated
+        ProductCreated,
+        ProductDeleted,
+        OrderConfirmed,
+        ClearCart
     }
 }

@@ -29,11 +29,15 @@ namespace OrderService.Migrations
                         .HasColumnType("UNIQUEIDENTIFIER");
 
                     b.Property<string>("ExternalId")
-                        .HasMaxLength(40)
+                        .HasMaxLength(128)
                         .HasColumnType("VARCHAR");
 
                     b.Property<DateTime>("IssuedAt")
                         .HasColumnType("DATETIME2");
+
+                    b.Property<string>("PaymentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -79,7 +83,7 @@ namespace OrderService.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("DATETIME2")
-                        .HasDefaultValue(new DateTime(2024, 10, 2, 22, 44, 53, 836, DateTimeKind.Local).AddTicks(3528));
+                        .HasDefaultValue(new DateTime(2024, 10, 4, 16, 35, 5, 769, DateTimeKind.Local).AddTicks(6886));
 
                     b.Property<string>("MessageType")
                         .IsRequired()

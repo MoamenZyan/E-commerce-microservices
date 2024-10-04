@@ -22,13 +22,19 @@ namespace OrderService.Infrastructure.Configurations.EntitiesConfigurations
 
             builder.Property(x => x.ExternalId)
                     .HasColumnType("VARCHAR")
-                    .HasMaxLength(40)
+                    .HasMaxLength(128)
                     .IsRequired(false);
 
             builder.Property(x => x.Status)
                     .HasConversion(
                         x => x.ToString(),
                         x => (Shared.Enums.OrderStatus)Enum.Parse(typeof(Shared.Enums.OrderStatus), x)
+                    ).IsRequired();
+
+            builder.Property(x => x.PaymentType)
+                    .HasConversion(
+                        x => x.ToString(),
+                        x => (Shared.Enums.PaymentType)Enum.Parse(typeof(Shared.Enums.PaymentType), x)
                     ).IsRequired();
 
             builder.Property(x => x.IssuedAt)

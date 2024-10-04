@@ -8,8 +8,8 @@ namespace Shared.Enums
 {
     public enum OrderStatus
     {
-        CREATED,
-        APPROVED,
+        PENDING,
         COMPLETED,
+        FAILED
     }
 }

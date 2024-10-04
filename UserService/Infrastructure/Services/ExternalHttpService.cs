@@ -15,7 +15,7 @@ namespace UserService.Infrastructure.Services
         }
         public async Task<List<Product>?> GetUserProducts(Guid userId)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync($"http://localhost:5190/api/product/all?userId={userId}");
+            HttpResponseMessage response = await _httpClient.GetAsync($"http://localhost:5190/api/product/all/{userId}");
 
             string content = await response.Content.ReadAsStringAsync();
 

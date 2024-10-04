@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Newtonsoft.Json;
+using OrderService.Domain;
 using OrderService.Infrastructure.Data;
 using OrderService.Infrastructure.Services.ExternalHttpServices;
 using Shared.DTOs;
@@ -23,12 +24,10 @@ namespace OrderService.Application.Features.Commands.CreateOrder
             if (cart == null)
                 return null;
 
+
             var productsInfo = await _externalHttpService.GetProductsInfo(cart.Products.Select(x => x.ProductId).ToList());
-            if (productsInfo == null)
+            if (productsInfo == null || productsInfo.Count == 0)
                 return null;
-
-
-            
 
             var products = new List<ProductItemDto>();
  
@@ -46,26 +45,27 @@ namespace OrderService.Application.Features.Commands.CreateOrder
                 products.Add(item);
             }
 
-            decimal total = products.Sum(x => x.Price * x.Quantity);
-
             var obj = new
             {
-                Total = total,
                 Products = products,
-                PayerId = request.UserId,
-                PaymentType = PaymentType.Paypal.ToString(),
+                PaymentType = request.PaymentType.ToString(),
+                Email = request.Email
             };
             
-            var result = await _externalHttpService.CreatePaypalOrder(obj);
+            Checkout result = await _externalHttpService.CreateCheckout(obj);
 
+            if (!result.IsSuccess)
+                return null;
+  
             Order order = new Order()
             {
-                Id = Guid.NewGuid(),
-                ExternalId = result.Id,
-                Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), result.Status),
-                Total = total,
+                Id = result.OrderId,
+                ExternalId = result.CheckoutId!,
+                Status = OrderStatus.PENDING,
+                Total = products.Sum(x => x.Price * x.Quantity),
                 UserId = request.UserId,
                 IssuedAt = DateTime.Now,
+                PaymentType = request.PaymentType
             };
 
             var orderItems = new List<OrderItem>();
@@ -79,12 +79,12 @@ namespace OrderService.Application.Features.Commands.CreateOrder
                 };
                 orderItems.Add(orderItem);
             }
-
+            
             await _context.Orders.AddAsync(order);
             await _context.Items.AddRangeAsync(orderItems);
             await _context.SaveChangesAsync();
 
-            return result.Links.First(x => x.Rel == "approve").Href;
+            return result.RedirectionUrl;
         }
     }
 }

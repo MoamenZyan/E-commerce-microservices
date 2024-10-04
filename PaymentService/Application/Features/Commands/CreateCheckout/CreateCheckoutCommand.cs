@@ -6,11 +6,10 @@ using Shared.Enums;
 
 namespace PaymentService.Application.Features.Commands.CreatePaymentOrder
 {
-    public class CreatePaymentOrderCommand : IRequest<OrderPaymentCreationResponse>
+    public class CreateCheckoutCommand : IRequest<CheckoutResponse>
     {
-        public decimal Total { get; set; }
-        public Guid PayerId { get; set; }
         public required List<ProductItemDto> Products { get; set; }
-        public string? PaymentType { get; set; }
+        public required string Email { get; set; }
+        public required string PaymentType { get; set; }
     }
 }

@@ -15,11 +15,12 @@ namespace NotificationService.Infrastructure.Services.RabbitMQServices.Strategie
         {
             return messageType switch
             {
-                MessageTypes.Welcome => _serviceProvider.GetService<IWelcomeNotificationStrategy>(),
-                MessageTypes.ConfirmEmail => _serviceProvider.GetService<IConfirmEmailNotificationStrategy>(),
-                MessageTypes.ResetPassword => _serviceProvider.GetService<IResetPasswordStrategy>(),
-                MessageTypes.ProductAddedToCart => _serviceProvider.GetService<IProductAddedToCartNotificationStrategy>(),
-                MessageTypes.ProductCreated => _serviceProvider.GetService<IProductCreatedNotificationStrategy>(),
+                MessageTypes.Welcome => _serviceProvider.GetRequiredService<IWelcomeNotificationStrategy>(),
+                MessageTypes.ConfirmEmail => _serviceProvider.GetRequiredService<IConfirmEmailNotificationStrategy>(),
+                MessageTypes.ResetPassword => _serviceProvider.GetRequiredService<IResetPasswordStrategy>(),
+                MessageTypes.ProductAddedToCart => _serviceProvider.GetRequiredService<IProductAddedToCartNotificationStrategy>(),
+                MessageTypes.ProductCreated => _serviceProvider.GetRequiredService<IProductCreatedNotificationStrategy>(),
+                MessageTypes.OrderConfirmed => _serviceProvider.GetRequiredService<IOrderConfirmedNotificationStrategy>(),
                 _ => null
             };
         }

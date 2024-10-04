@@ -103,6 +103,10 @@
             "Serilog.Sinks.Elasticsearch": {
               "target": "Package",
               "version": "[10.0.0, )"
+            },
+            "Stripe.net": {
+              "target": "Package",
+              "version": "[46.1.0, )"
             }
           },
           "imports": [

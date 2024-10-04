@@ -15,6 +15,7 @@ namespace Shared.Entities
         public string ExternalId { get; set; } = null!;
         public decimal Total { get; set; }
         public DateTime IssuedAt { get; set; }
+        public PaymentType PaymentType { get; set; }
 
         public virtual List<OrderItem> Items { get; set; } = new List<OrderItem>();
     }

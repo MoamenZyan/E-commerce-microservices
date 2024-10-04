@@ -10,7 +10,6 @@ using OrderService.Infrastructure.Services.OutboxServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Shared.SigningKeys;
 using System.Security.Cryptography;
-using OrderService.Infrastructure.Services.BackgroundServices;
 namespace OrderService.Infrastructure.IoC
 {
     public static class DependencyInjection
@@ -81,10 +80,13 @@ namespace OrderService.Infrastructure.IoC
                 return connection.CreateModel();
             });
 
+            services.AddScoped<RabbitMQProducerService>();
+
+            
+
             // Background Services
             services.AddHostedService<RabbitMQConsumerService>();
             services.AddHostedService<OutboxService>();
-            services.AddHostedService<PaypalOrderCheckService>();
 
             // Http Services
             services.AddScoped<HttpClient>();
